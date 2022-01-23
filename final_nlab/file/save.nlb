@@ -1,0 +1,7 @@
+BEGIN {
+    SAVE "save1.txt" 5
+    SAVE "save2.txt" "value"
+
+    READ "./file/ltoad.arr" $A
+    SAVE "save3.txt" $A 
+}

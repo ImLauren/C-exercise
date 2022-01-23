@@ -1,0 +1,8 @@
+BEGIN {
+   READ "./file/ms.arr" $A
+
+   SET $B := $A 1 B-SUB ;
+   SET $C := $A $B B-MUL ;
+   PRINT "ARRAY_C:"
+   PRINT $C
+}

@@ -1,0 +1,10 @@
+BEGIN {
+   READ "./file/lblock.arr" $A
+
+   SET $A := $A U-NOT ;
+   SET $B := $A 2 B-AND ;
+   SET $C := $A $B B-ADD $A B-GREATER  ;
+   SET $D := $C 3 B-TIMES ;
+   PRINT "ARRAY_D:"
+   PRINT $D
+}

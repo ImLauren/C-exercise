@@ -1,0 +1,9 @@
+BEGIN {
+   ONES 3 4 $A
+   LOOP $I 4 {
+       SET $A := $A 2 B-TIMES ;
+       PRINT $I
+       PRINT $A
+    }
+}
+

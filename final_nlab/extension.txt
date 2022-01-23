@@ -1,0 +1,58 @@
+
+1. <SAVE> Instruction ————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+In <INSTRC>, adding <SAVE> instruction.
+<SAVE> can creat a new file, and save variable value, interger or string in it.
+
+GRAMMAR is as follows:
+
+<INSTRC> ::= <PRINT> | <SET> | <CREATE> | <LOOP> | <SAVE>
+<SAVE> ::= "SAVE" <FILENAME> <TYPE> 
+<TYPE> ::== <VARNAME> | <INTEGER> | <STRING>
+
+eg. in 'file' folder, 'save.nlb' contains all the three types of <SAVE>.
+    after run './extension ./file/save.nlb', three fiels will be created 'save1.txt', 'save2.txt' and 'save3.txt'.
+    'save1.txt' saves the interger 5.
+    'save2.txt' saves the string "value".
+    'save3.txt' saves the $A matrix value.
+
+    'save.nlb' codes:       BEGIN {
+                                SAVE "save1.txt" 5
+                                SAVE "save2.txt" "value"
+                                READ "./file/ltoad.arr" $A
+                                SAVE "save3.txt" $A 
+                            }
+
+
+2. "B-SUB" "B-MUL" Binaryop ——————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+In <BINARYOP>, adding "B-SUB" and "B-MUL".
+"B-SUB" :  eg. SET $C := $A $B B-SUB ;  =>>   C = A - B
+           In "B-SUB", the result of single number subtraction must be non-negative, otherwise a error will be reported.
+           A single number cannot sub matrix, either.
+"B-MUL" :  eg. SET $C := $A $B B-MUL ;  =>>   C = A * B
+           Matrix multiplication for two matrices (the same number of row and column,  cannot be 1 * 1 matrix)
+           Only when the rows of A matrix and the columns of B matrix are the same can do 'B-MUL'. 
+
+GRAMMAR is as follows:
+
+<BINARYOP> :: "B-AND" | "B-OR" | "B-GREATER" | "B-LESS" | "B-ADD" | "B-TIMES" | "B-EQUALS" | "B-SUB" | "B-MUL"
+
+eg. in 'file' folder, 'mulsub.nlb' contains these two operations.
+    A array has value:  1 2 3 4             after 'B-SUB',  B array has value:  0 1 2 3
+                        2 5 4 1                                                 1 4 3 0 
+                        1 6 3 5                                                 0 5 2 4
+                        5 4 8 2                                                 4 3 7 1
+    after 'B-MUL', C array has value:   18 36 42 19 
+                                        9  45 34 23 
+                                        26 55 61 20 
+                                        12 67 52 49 
+
+    'mulsub.nlb' codes:     BEGIN {
+                                READ "./file/ms.arr" $A
+                                SET $B := $A 1 B-SUB ;
+                                SET $C := $A $B B-MUL ;
+                                PRINT "ARRAY_C:"
+                                PRINT $C
+                            }
+

@@ -1,0 +1,147 @@
+
+Using 'make testparse' and 'make testinterp' in makefile can build programs that test my codes.
+Using 'make all' to builds all programs: parse, interp, testparse, testinterp, extension
+
+Test function needs files in 'file' floder.
+
+In testparse.c,  functions with return value are be tested individually first.
+After that, only normal codes are tested because the abnormal code will exit abnormally.
+
+In testinterp.c, functions with return value are the same as those in testparse.c, so 'test_single_function()' is not exist.
+After that, only normal codes are tested because the abnormal code will exit abnormally.
+When all codes are tested, its result value will be printed.
+
+All syntax is contained in the nlb files.
+
+————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+The following is what the error code will display (take the interp program executed by 'make interp' as an example):
+
+BASIC GRAMMAR ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+1. If file that contains codes does't exist, outputing the error prompt as follows and exiting the program:
+   Fatal Error: No file? occured in Interpreter/interpmain.c, line 13
+
+2. If the code misses 'BEGIN', outputing the error prompt as follows and exiting the program:
+   (For example, delete 'BEGIN' in test1.nlb)
+   Fatal Error: No BEGIN statement? occured in Interpreter/interp.c, line 17
+
+3. If the code misses the beginning '{', outputing the error prompt as follows and exiting the program:
+   (For example, delete the beginning '{' in test1.nlb)
+   Fatal Error: No "{" statement? occured in Interpreter/interp.c, line 22
+
+4. If the code misses the end '}', outputing the error prompt as follows and exiting the program:
+   (For example, delete the end '}' in test1.nlb)
+   Fatal Error: Expecting a PRINT, SET, CREATE, LOOP or '}' statement? occured in Interpreter/interp.c, line 54
+
+5. If the keywords of the code do not match or there are no keywords, outputing the error prompt as follows and exiting the program:
+   (For example, change 'print' to 'prin' in test1.nlb)
+   Fatal Error: Expecting a PRINT, SET, CREATE, LOOP or '}' statement? occured in Interpreter/interp.c, line 54
+
+PRINT GRAMMAR ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+1. If there is no '"' at the beginning of PRINT string, outputing the error prompt as follows and exiting the program:
+   (For example, no beginning '"' in test1.nlb)
+   Fatal Error: Expecting a variable or string? occured in Interpreter/interp.c, line 66
+
+2. If there is no '"' at the end of PRINT string, outputing the error prompt as follows and exiting the program:
+   (For example, no end '"' in test1.nlb)
+   Fatal Error: Expecting a " statement? occured in Interpreter/interp.c, line 110
+
+3. If there is no string or variable after PRINT, outputing the error prompt as follows and exiting the program:
+   (For example, no end '$D' in test1.nlb)
+   Fatal Error: Expecting a variable or string? occured in Interpreter/interp.c, line 66
+
+4. If there is a space in string, outputing the error prompt as follows and exiting the program:
+   (For example, 'PRINT "ARRAY D:"' in test1.nlb)
+   Fatal Error: Expecting a " statement? occured in Interpreter/interp.c, line 110
+
+SET GRAMMAR —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+1. If there is no variable after SET, outputing the error prompt as follows and exiting the program:
+   (For example, 'SET $B := $A 2 B-AND ;' becomes 'SET := $A 2 B-AND ;' in test1.nlb)
+   Fatal Error: Expecting a variable? occured in Interpreter/interp.c, line 134
+
+2. If the keywords of the SET do not match, outputing the error prompt as follows and exiting the program:
+   (For example, change ':=' to '=' or no ':=' in test1.nlb)
+   Fatal Error: Expecting a ':=' statement? occured in Interpreter/interp.c, line 140
+
+3. If there if no ';' in SET grammar, outputing the error prompt as follows and exiting the program:
+   (For example, no ';' in test1.nlb)
+   Fatal Error: Expecting a varialbe or ';' statement? occured in Interpreter/interp.c, line 457
+
+4. No variables before UNARYOP or less than 2 variables before BINARYOP, outputing the error prompt as follows and exiting the program:
+   (For example, 'SET $A :=  U-NOT ;' in test1.nlb)
+   Fatal Error: Expecting a varialbe? occured in Interpreter/interp.c, line 298
+
+CREAT GRAMMAR ———————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+1. Wrong file name after READ, outputing the error prompt as follows and exiting the program:
+   (For example, 'READ "./file/lbl.arr" $A' in test1.nlb)
+   Fatal Error: No file? occured in Interpreter/interp.c, line 1335
+
+2. No variable after file name, outputing the error prompt as follows and exiting the program:
+   (For example, 'READ "./file/lblock.arr" ' in test1.nlb)
+   Fatal Error: Expecting a Variable? occured in Interpreter/interp.c, line 1360
+
+3. There is no number after ONES, outputing the error prompt as follows and exiting the program:
+   (For example, 'ONES  $A' in test2.nlb)
+   Fatal Error: Expecting an interger of row? occured in Interpreter/interp.c, line 1280
+
+4. There is one number after ONES, outputing the error prompt as follows and exiting the program:
+   (For example, 'ONES 3 $A' in test2.nlb)
+   Fatal Error: Expecting an interger of column? occured in Interpreter/interp.c, line 1287
+
+LOOP GRAMMAR ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+1. No variable after LOOP, outputing the error prompt as follows and exiting the program:
+   (For example, 'LOOP  4 {' in test2.nlb)
+   Fatal Error: Expecting a Variable? occured in Interpreter/interp.c, line 1384
+
+2. No number after LOOP, outputing the error prompt as follows and exiting the program:
+   (For example, 'LOOP $I  {' in test2.nlb)
+   Fatal Error: Expecting an Interger? occured in Interpreter/interp.c, line 1391
+
+3. No '{' after LOOP, outputing the error prompt as follows and exiting the program:
+   (For example, 'LOOP $I 4 ' in test2.nlb)
+   Fatal Error: Expecting a '{' statement? occured in Interpreter/interp.c, line 1397
+
+4. No '}'after LOOP, outputing the error prompt as follows and exiting the program:
+   (For example, no line 7 in test2.nlb)
+   Fatal Error: Expecting a PRINT, SET, CREATE, LOOP or '}' statement? occured in Interpreter/interp.c, line 54
+
+EXTENSION GRAMMAR ————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+The following is what the error code will display (take the extension program executed by 'make extension' as an example):
+
+SAVE:
+
+1. No filename after SAVE, outputing the error prompt as follows and exiting the program:
+   (For example, 'SAVE  5' in save.nlb)
+   Fatal Error: Expecting a filename? occured in Extension/extension.c, line 1538
+
+2. No TYPE after filename, outputing the error prompt as follows and exiting the program:
+   (For example, 'SAVE "save1.txt" ' in save.nlb)
+   Fatal Error: Expecting a TYPE? occured in Extension/extension.c, line 1583
+
+B-SUB:
+
+1. Two interger sub and result is negetive number, outputing the error prompt as follows and exiting the program:
+   (For example, 'SET $D := 2 3 B-SUB ;')
+   Fatal Error: Can't do negative numbers operation! occured in Extension/extension.c, line 1274
+
+2. Using number to sub matrix, outputing the error prompt as follows and exiting the program:
+   (For example, 'SET $B := 1 $A B-SUB ;', $A is a 6*6 matrix)
+   Fatal Error: A number is not allowed sub matrix! occured in Extension/extension.c, line 1305
+
+B-MUL:
+
+1. Two interger use 'B-MUL',  outputing the error prompt as follows and exiting the program:
+   (For example, 'SET $C := 1 2 B-MUL ;')
+   Fatal Error: Only two mul*mul matrix can do 'B-MUL'! occured in Extension/extension.c, line 1337
+
+2. the rows of the first matrix and the columns of the second matrix are different, outputing the error prompt as follows and exiting the program:
+   (For example, 'SET $C := $A $B B-MUL ;', $A is a 4*4 matrix and $B is a 5*5 matrix)
+   Fatal Error: Two array must be the same size! occured in Extension/extension.c, line 511
+
+
